@@ -72,6 +72,8 @@ public class VerifyWorkbook {
         }
        int SORQtokenRow=0; 
        int EORQtokenRow=0;
+       int SORYtokenRow=0; 
+       int EORYtokenRow=0;
        int SOOWDtokenRow=0;
        int EOOWDtokenRow=0;
        int SOFWDtokenRow=0;
@@ -83,6 +85,12 @@ public class VerifyWorkbook {
                         SORQtokenRow=(get_tokenmodelList.get(i).row_no);
                else if(get_tokenmodelList.get(i).token_name.equals("EORQ"))
                         EORQtokenRow=(get_tokenmodelList.get(i).row_no);
+               
+               else if(get_tokenmodelList.get(i).token_name.equals("SORY"))
+                        SORYtokenRow=(get_tokenmodelList.get(i).row_no);
+               else if(get_tokenmodelList.get(i).token_name.equals("EORY"))
+                        EORYtokenRow=(get_tokenmodelList.get(i).row_no);
+               
                else if(get_tokenmodelList.get(i).token_name.equals("SOOWD"))
                         SOOWDtokenRow=(get_tokenmodelList.get(i).row_no);
                else if(get_tokenmodelList.get(i).token_name.equals("EOOWD"))
@@ -94,7 +102,12 @@ public class VerifyWorkbook {
         }
        ArrayList<String>opeartion_standard_workingSectionList=new Operation_Standard_WorkingSection_count().working_Section(SOOWDtokenRow, EOOWDtokenRow,workbook);
        ArrayList<String>financial_standard_workingSectionList=new Financial_Standard_WorkingSection_count().working_Section(SOFWDtokenRow, EOFWDtokenRow,workbook);
-       ArrayList<ErrorModel> ls=(new Reporting_Qtr_Verification()).startReporting_QtrVerification(SORQtokenRow,EORQtokenRow,opeartion_standard_workingSectionList,financial_standard_workingSectionList ,workbook);
+       
+       /*ArrayList<ErrorModel> ls=(new Reporting_Qtr_Verification()).startReporting_QtrVerification(SORQtokenRow,EORQtokenRow,opeartion_standard_workingSectionList,financial_standard_workingSectionList ,workbook);
+       ls.stream().forEach((errormodel) -> {
+             System.out.println("ccelref "+errormodel.cell_ref+" sheetname "+errormodel.sheet_name+" dis "+errormodel.error_desc);
+           });  */
+       ArrayList<ErrorModel> ls=(new Reporting_Year_Verification()).startReporting_YearVerification(SORYtokenRow,EORYtokenRow,opeartion_standard_workingSectionList,financial_standard_workingSectionList ,workbook);
        ls.stream().forEach((errormodel) -> {
              System.out.println("ccelref "+errormodel.cell_ref+" sheetname "+errormodel.sheet_name+" dis "+errormodel.error_desc);
            });  
@@ -110,7 +123,7 @@ public class VerifyWorkbook {
            }
        });
        //finally dump the error report to the Exxcel file 
-       new FormatvarificationErrorList().dumpFormatErrorToExcelFile(ls);    
+       //new FormatvarificationErrorList().dumpFormatErrorToExcelFile(ls);    
    } 
  }
 
